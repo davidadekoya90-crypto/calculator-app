@@ -1,113 +1,132 @@
-# calculator-app
-Scientific Calculator
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scientific Calculator</title><style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #111;
+    font-family: Arial;
+}
 
-Overview
+.calculator {
+    background: #222;
+    padding: 20px;
+    border-radius: 15px;
+    width: 320px;
+}
 
-This is a simple web-based scientific calculator built with HTML, CSS, and JavaScript.
-It supports basic arithmetic operations and scientific functions like sin, cos, tan, log, and ln.
+.display {
+    width: 100%;
+    height: 60px;
+    font-size: 22px;
+    margin-bottom: 10px;
+    text-align: right;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+}
 
----
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
 
-Features
+button {
+    padding: 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
-- Basic operations: "+ − × ÷"
-- Powers: "x²", "xʸ"
-- Square root: "√"
-- Constants: "π"
-- Trigonometric functions: "sin", "cos", "tan" (in degrees)
-- Logarithms:
-  - "log" → base 10
-  - "ln" → natural log
-- Input helpers:
-  - Auto converts "sin 30" → "sin(30)"
-  - Delete (DEL) and Clear (C)
+button:hover {
+    opacity: 0.8;
+}
 
----
+.operator { background: orange; }
+.equal { background: green; color: white; }
+.clear { background: red; color: white; }
+.func { background: #555; color: white; }
+</style></head><body><div class="calculator">
+    <input type="text" id="display" class="display" disabled><div class="buttons">
+    <button class="clear" onclick="clearDisplay()">C</button>
+    <button onclick="deleteLast()">DEL</button>
+    <button onclick="append('(')">(</button>
+    <button onclick="append(')')">)</button>
+    <button class="operator" onclick="append('/')">÷</button>
 
-Important Notes
+    <button onclick="append('7')">7</button>
+    <button onclick="append('8')">8</button>
+    <button onclick="append('9')">9</button>
+    <button class="operator" onclick="append('*')">×</button>
+    <button class="func" onclick="append('Math.sqrt(')">√</button>
 
-1. Trigonometric Functions
+    <button onclick="append('4')">4</button>
+    <button onclick="append('5')">5</button>
+    <button onclick="append('6')">6</button>
+    <button class="operator" onclick="append('-')">−</button>
+    <button class="func" onclick="append('**2')">x²</button>
 
-- All trig functions use degrees, not radians.
-- Example:
-  - "sin(30)" → "0.5"
-  - "cos(60)" → "0.5"
-  - "tan(45)" → "1"
+    <button onclick="append('1')">1</button>
+    <button onclick="append('2')">2</button>
+    <button onclick="append('3')">3</button>
+    <button class="operator" onclick="append('+')">+</button>
+    <button class="func" onclick="append('Math.pow(')">xʸ</button>
 
----
+    <button onclick="append('0')">0</button>
+    <button onclick="append('.')">.</button>
+    <button class="func" onclick="append('Math.PI')">π</button>
+    <button class="equal" onclick="calculate()">=</button>
+    <button class="func" onclick="append(',')">,</button>
 
-2. Input Format
+    <!-- FIXED TRIG BUTTONS -->
+    <button class="func" onclick="append('sin(')">sin</button>
+    <button class="func" onclick="append('cos(')">cos</button>
+    <button class="func" onclick="append('tan(')">tan</button>
+    <button class="func" onclick="append('Math.log10(')">log</button>
+    <button class="func" onclick="append('Math.log(')">ln</button>
+</div>
 
-You can enter expressions in two ways:
+</div><script>
+// Convert degrees to radians
+function sin(x) {
+    return Math.sin(x * Math.PI / 180);
+}
 
-✅ Recommended:
+function cos(x) {
+    return Math.cos(x * Math.PI / 180);
+}
 
-sin(30)
-cos(45)
-tan(40)
+function tan(x) {
+    return Math.tan(x * Math.PI / 180);
+}
 
-✅ Also supported:
+function append(value) {
+    document.getElementById("display").value += value;
+}
 
-sin 30
-cos 45
-tan 40
+function clearDisplay() {
+    document.getElementById("display").value = "";
+}
 
-The calculator automatically converts them internally.
+function deleteLast() {
+    let current = document.getElementById("display").value;
+    document.getElementById("display").value = current.slice(0, -1);
+}
 
----
-
-3. Log Functions
-
-log(100) → 2
-ln(2.718) → ~1
-
----
-
-4. Power Function
-
-Use:
-
-Math.pow(2,3) → 8
-
-Or via buttons:
-
-- Press "xʸ"
-- Enter values separated by ","
-
----
-
-How It Works
-
-- User input is displayed in the screen.
-- Before evaluation:
-  - Expressions like "sin 30" are converted to "sin(30)"
-- JavaScript "eval()" is used to compute the result.
-- Custom functions convert degrees → radians for trig calculations.
-
----
-
-Known Limitations
-
-- Uses "eval()" (not fully secure for advanced use cases)
-- Requires proper syntax for complex expressions
-- No bracket auto-completion
-
----
-
-Future Improvements (Optional)
-
-- DEG/RAD toggle switch
-- Safer expression parser (replace "eval")
-- Keyboard input support
-- Calculation history
-- Improved UI (Casio-style layout)
-
----
-
-Author Note
-
-This project is ideal for learning:
-
-- DOM manipulation
-- Event handling
-- Basic math processing in JavaScript
+function calculate() {
+    try {
+        let result = eval(document.getElementById("display").value);
+        document.getElementById("display").value = result;
+    } catch {
+        document.getElementById("display").value = "Error";
+    }
+}
+</script></body>
+</html>
